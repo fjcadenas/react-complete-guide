@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+import cssClasses from './App.css';
 // Import the components
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 
 // App Component is referred as a Container because is a part of our application that can change the state of the application
 class App extends Component {
@@ -42,64 +43,27 @@ class App extends Component {
     };
 
     render() {
-
-        // should only be used on scoped elements
-        const style = {
-            backgroundColor: 'green',
-            color: 'white',
-            font: 'inherit',
-            border: '1px solid blue',
-            padding: '8px',
-            cursor: 'pointer',
-            ':hover': {
-                backgroundColor: 'lightgreen',
-                color:'black'
-            }
-        };
-
         // Conditional rendering should be done the JS way.
         let persons = null;
+
         if (this.state.showPersons) {
             persons = (
-                <div>
-                    {this.state.persons.map((person, index) => {
-                        return (
-                            <Person
-                                key={person.id}
-                                click={this.deletePersonHandler.bind(this, index)}
-                                name={person.name}
-                                age={person.age}
-                                changed={(event) => this.nameChangeHandler(event, person.id)}
-                            />
-                        )
-
-                    })}
-                </div>
+                <Persons
+                    persons={this.state.persons}
+                    clicked={this.deletePersonHandler}
+                    changed={this.nameChangeHandler}
+                />
             );
-
-            style.backgroundColor = 'red';
-            style[':hover'] = {
-                backgroundColor: 'salmon',
-                    color:'black'
-            }
         }
 
-        const classes = [];
-        if (this.state.persons.length <= 2) {
-            classes.push('red');
-        }
-        if (this.state.persons.length <= 1) {
-            classes.push('bold');
-        }
 
         return (
-            <div className="App">
-                <h1>Hi, I'm a React App</h1>
-                <p className={classes.join(' ')}>This is really working!</p>
-                <button
-                    style={style}
-                    onClick={this.togglePersonHandler}>Toggle Persons
-                </button>
+            <div className={cssClasses.App}>
+                <Cockpit
+                    showPersons={this.state.showPersons}
+                    persons={this.state.persons}
+                    click={this.togglePersonHandler}
+            />
                 {persons}
             </div>
         );
