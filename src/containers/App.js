@@ -6,6 +6,12 @@ import Cockpit from '../components/Cockpit/Cockpit';
 
 // App Component is referred as a Container because is a part of our application that can change the state of the application
 class App extends Component {
+
+    constructor(props) {
+        super(props);
+        console.log('[App.js] Inside the Constructor:',props);
+    }
+
     state = {
         persons: [
             {id: 'person_1', name: 'Max', age: 28},
@@ -56,10 +62,10 @@ class App extends Component {
             );
         }
 
-
         return (
             <div className={cssClasses.App}>
                 <Cockpit
+                    appTitle={this.props.title}
                     showPersons={this.state.showPersons}
                     persons={this.state.persons}
                     click={this.togglePersonHandler}
