@@ -1,25 +1,46 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import cssClasses from './App.css';
 // Import the components
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 // App Component is referred as a Container because is a part of our application that can change the state of the application
-class App extends Component {
+class App extends PureComponent {
 
     constructor(props) {
         super(props);
         console.log('[App.js] Inside the Constructor:',props);
+        this.state = {
+            persons: [
+                {id: 'person_1', name: 'Max', age: 28},
+                {id: 'person_2', name: 'Manu', age: 29},
+                {id: 'person_3', name: 'Fran', age: 26}
+            ],
+            showPersons: false,
+        };
     }
 
-    state = {
-        persons: [
-            {id: 'person_1', name: 'Max', age: 28},
-            {id: 'person_2', name: 'Manu', age: 29},
-            {id: 'person_3', name: 'Fran', age: 26}
-        ],
-        showPersons: false,
-    };
+    componentWillMount() {
+        console.log('[App.js] Inside componentWillMount');
+    }
+
+    componentDidMount() {
+        console.log('[App.js] Inside componentDidMount');
+    }
+
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     console.log('[UPDATE App.js] Inside shouldComponentUpdate');
+    //     return nextState.persons !== this.state.persons ||
+    //         nextState.showPersons !== this.state.showPersons;
+    // }
+
+    componentWillUpdate(nextProp, nextState) {
+        console.log('[UPDATE App.js] Inside componentWillUpdate', nextProp, nextState);
+    }
+
+    componentDidUpdate () {
+        console.log('[UPDATE App.js] Inside componentDidUpdate', this.props, this.state);
+    }
 
     // Events objects are automatically passed to the handler
     nameChangeHandler = (event, id) => {
@@ -49,6 +70,7 @@ class App extends Component {
     };
 
     render() {
+        console.log('[App.js] Inside the render method');
         // Conditional rendering should be done the JS way.
         let persons = null;
 
@@ -64,6 +86,7 @@ class App extends Component {
 
         return (
             <div className={cssClasses.App}>
+                <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
                 <Cockpit
                     appTitle={this.props.title}
                     showPersons={this.state.showPersons}
