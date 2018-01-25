@@ -1,8 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, {Fragment, PureComponent} from 'react';
 import cssClasses from './App.css';
 // Import the components
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
+import Aux from '../hoc/Aux';
+import withClass from '../hoc/withClass';
 
 // App Component is referred as a Container because is a part of our application that can change the state of the application
 class App extends PureComponent {
@@ -17,6 +19,7 @@ class App extends PureComponent {
                 {id: 'person_3', name: 'Fran', age: 26}
             ],
             showPersons: false,
+            toggleClickCounter: 0
         };
     }
 
@@ -64,9 +67,12 @@ class App extends PureComponent {
     };
 
     togglePersonHandler = () => {
-        this.setState({
-            showPersons: !this.state.showPersons
-        })
+        this.setState( (prevState, props) => {
+            return {
+                showPersons: !prevState.showPersons,
+                toggleClickCounter: prevState.toggleClickCounter + 1
+            }
+        });
     };
 
     render() {
@@ -85,19 +91,19 @@ class App extends PureComponent {
         }
 
         return (
-            <div className={cssClasses.App}>
+            <Fragment>
                 <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
                 <Cockpit
                     appTitle={this.props.title}
                     showPersons={this.state.showPersons}
                     persons={this.state.persons}
                     click={this.togglePersonHandler}
-            />
+                />
                 {persons}
-            </div>
+            </Fragment>
         );
     }
 }
 
 // This is called a high order component. In this case we inject extra features to understand CSS
-export default App;
+export default withClass(App, cssClasses.App);
